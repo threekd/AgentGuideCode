@@ -123,10 +123,16 @@ class OpenAICompatibleClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
+                reasoning_effort="high",
+                extra_body={"thinking": {"type": "enabled"}},
                 stream=False
             )
             answer = response.choices[0].message.content
             print("大语言模型响应成功。")
+            reasoning_content = response.choices[0].message.reasoning_content
+            if reasoning_content:
+                print("模型的思考过程:")
+                print(reasoning_content)
             return answer
         except Exception as e:
             print(f"调用LLM API时发生错误: {e}")
@@ -137,15 +143,15 @@ import re
 # --- 1. 配置LLM客户端 ---
 # 请根据您使用的服务，将这里替换成对应的凭证和地址
 load_dotenv()
-API_KEY = os.getenv("DS_API_KEY")
-BASE_URL = os.getenv("DS_BASE_URL")
+API_KEY = os.getenv("DEEPSEEK_API_KEY")
+BASE_URL = os.getenv("DEEPSEEK_BASE_URL")
 MODEL_ID = "deepseek-v4-flash"
 TAVILY_API_KEY=os.getenv("TAVILY_API_KEY")
 
 llm = OpenAICompatibleClient(
     model=MODEL_ID,
     api_key=API_KEY,
-    base_url=BASE_URL
+    base_url=BASE_URL,
 )
 
 # --- 2. 初始化 ---

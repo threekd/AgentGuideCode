@@ -9,4 +9,6 @@ dependencies = [
     "openai>=2.53.0",
     "requests>=2.34.2",
     "tavily-python>=0.7.27",
+    "torch>=2.13.0",
+    "transformers>=5.15.0",
 ]
